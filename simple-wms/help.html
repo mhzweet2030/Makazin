@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المساعدة - نظام إدارة المخازن</title>
+    <!-- Bootstrap RTL CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Tajawal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .help-sidebar {
+            background-color: #f8f9fa;
+            border-left: 1px solid #dee2e6;
+            height: 100%;
+        }
+        .help-sidebar .nav-link {
+            color: #495057;
+            border-radius: 0;
+            padding: 0.8rem 1rem;
+        }
+        .help-sidebar .nav-link:hover {
+            background-color: #e9ecef;
+        }
+        .help-sidebar .nav-link.active {
+            background-color: #0d6efd;
+            color: white;
+        }
+        .help-content {
+            min-height: 70vh;
+        }
+        .footer {
+            background-color: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            padding: 1.5rem 0;
+        }
+        .accordion-button:not(.collapsed) {
+            background-color: #e7f1ff;
+            color: #0d6efd;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <i class="fas fa-warehouse me-2"></i>
+                <span>نظام إدارة المخازن</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.html">
+                            <i class="fas fa-tachometer-alt me-1"></i> لوحة التحكم
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="products.html">
+                            <i class="fas fa-box me-1"></i> المنتجات
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="inventory.html">
+                            <i class="fas fa-boxes me-1"></i> المخزون
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="orders.html">
+                            <i class="fas fa-shopping-cart me-1"></i> الطلبيات
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="shipping.html">
+                            <i class="fas fa-truck me-1"></i> الشحن
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="reports.html">
+                            <i class="fas fa-chart-bar me-1"></i> التقارير
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="users.html">
+                            <i class="fas fa-users me-1"></i> المستخدمين
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-question-circle me-1"></i> الدعم
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item active" href="help.html">المساعدة</a></li>
+                            <li><a class="dropdown-item" href="faq.html">الأسئلة الشائعة</a></li>
+                            <li><a class="dropdown-item" href="contact.html">اتصل بنا</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="privacy.html">سياسة الخصوصية</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <a href="#" class="btn btn-outline-light">
+                        <i class="fas fa-user me-1"></i> تسجيل الدخول
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-lg-3 mb-4">
+                <div class="help-sidebar p-3 rounded shadow-sm">
+                    <h5 class="fw-bold mb-3">دليل المساعدة</h5>
+                    <div class="nav flex-column nav-pills">
+                        <a class="nav-link active" href="#getting-started" data-bs-toggle="pill">البداية مع النظام</a>
+                        <a class="nav-link" href="#products-help" data-bs-toggle="pill">إدارة المنتجات</a>
+                        <a class="nav-link" href="#inventory-help" data-bs-toggle="pill">إدارة المخزون</a>
+                        <a class="nav-link" href="#orders-help" data-bs-toggle="pill">إدارة الطلبيات</a>
+                        <a class="nav-link" href="#shipping-help" data-bs-toggle="pill">إدارة الشحن</a>
+                        <a class="nav-link" href="#reports-help" data-bs-toggle="pill">التقارير</a>
+                        <a class="nav-link" href="#users-help" data-bs-toggle="pill">إدارة المستخدمين</a>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="d-grid gap-2">
+                        <a href="faq.html" class="btn btn-outline-primary">
+                            <i class="fas fa-question-circle me-1"></i> الأسئلة الشائعة
+                        </a>
+                        <a href="contact.html" class="btn btn-outline-primary">
+                            <i class="fas fa-envelope me-1"></i> اتصل بالدعم الفني
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Content -->
+            <div class="col-lg-9">
+                <div class="card shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="tab-content help-content">
+                            <!-- Getting Started -->
+                            <div class="tab-pane fade show active" id="getting-started">
+                                <h2 class="mb-4">البداية مع نظام إدارة المخازن</h2>
+                                
+                                <div class="alert alert-primary">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    مرحباً بك في دليل المساعدة لنظام إدارة المخازن. هذا الدليل سيساعدك على فهم كيفية استخدام النظام بكفاءة.
+                                </div>
+                                
+                                <h4 class="mt-4">نظرة عامة على النظام</h4>
+                                <p>
+                                    نظام إدارة المخازن هو حل متكامل يساعدك على إدارة مخزونك ومنتجاتك وطلبياتك بكفاءة عالية. يتكون النظام من عدة وحدات رئيسية:
+                                </p>
+                                
+                                <div class="row mt-4">
+                                    <div class="col-md-6 mb-3">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    <i class="fas fa-tachometer-alt text-primary me-2"></i>
+                                                    لوحة التحكم
+                                                </h5>
+                                                <p class="card-text">توفر نظرة عامة على حالة المخزون والطلبيات والإحصائيات الهامة.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    <i class="fas fa-box text-success me-2"></i>
+                                                    إدارة المنتجات
+                                                </h5>
+                                                <p class="card-text">تمكنك من إضافة وتعديل وحذف المنتجات وإدارة التصنيفات.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    <i class="fas fa-boxes text-info me-2"></i>
+                                                    إدارة المخزون
+                                                </h5>
+                                                <p class="card-text">تتبع الكميات المدخلة والمخرجة وتنبيهات المخزون المنخفض.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    <i class="fas fa-shopping-cart text-warning me-2"></i>
+                                                    إدارة الطلبيات
+                                                </h5>
+                                                <p class="card-text">إنشاء وتتبع حالة الطلبيات وربطها بالعملاء.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <h4 class="mt-4">الخطوات الأولى</h4>
+                                <ol class="list-group list-group-numbered mb-4">
+                                    <li class="list-group-item">قم بتسجيل الدخول باستخدام اسم المستخدم وكلمة المرور الخاصة بك.</li>
+                                    <li class="list-group-item">استكشف لوحة التحكم للحصول على نظرة عامة على النظام.</li>
+                                    <li class="list-group-item">قم بإضافة المنتجات الخاصة بك في قسم إدارة المنتجات.</li>
+                                    <li class="list-group-item">قم بتحديث المخزون الخاص بك في قسم إدارة المخزون.</li>
+                                    <li class="list-group-item">ابدأ في إدارة الطلبيات والشحن.</li>
+                                </ol>
+                                
+                                <h4 class="mt-4">فيديو تعليمي</h4>
+                                <div class="ratio ratio-16x9 mb-4">
+                                    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="فيديو تعليمي" allowfullscreen></iframe>
+                                </div>
+                                
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    <strong>ملاحظة:</strong> تأكد من تحديث بيانات المخزون بانتظام للحصول على تقارير دقيقة.
+                                </div>
+                            </div>
+                            
+                            <!-- Products Help -->
+                            <div class="tab-pane fade" id="products-help">
+                                <h2 class="mb-4">دليل إدارة المنتجات</h2>
+                                
+                                <p>
+                                    تتيح لك وحدة إدارة المنتجات إضافة وتعديل وحذف المنتجات وإدارة التصنيفات. فيما يلي شرح مفصل لكيفية استخدام هذه الوحدة:
+                                </p>
+                                
+                                <h4 class="mt-4">إضافة منتج جديد</h4>
+                                <ol>
+                                    <li>انتقل إلى صفحة "إدارة المنتجات".</li>
+                                    <li>انقر على زر "إضافة منتج جديد".</li>
+                                    <li>أدخل معلومات المنتج (الاسم، الوصف، السعر، الكمية، إلخ).</li>
+                                    <li>حدد التصنيف المناسب للمنتج.</li>
+                                    <li>قم بتحميل صورة للمنتج (اختياري).</li>
+                                    <li>انقر على زر "حفظ" لإضافة المنتج.</li>
+                                </ol>
+                                
+                                <div class="alert alert-info mt-3 mb-4">
+                                    <i class="fas fa-lightbulb me-2"></i>
+                                    <strong>نصيحة:</strong> استخدم أسماء وصفية للمنتجات لتسهيل البحث عنها لاحقاً.
+                                </div>
+                                
+                                <h4 class="mt-4">تعديل منتج</h4>
+                                <ol>
+                                    <li>ابحث عن المنتج الذي تريد تعديله في قائمة المنتجات.</li>
+                                    <li>انقر على زر "تعديل" بجوار المنتج.</li>
+                                    <li>قم بتعديل المعلومات المطلوبة.</li>
+                                    <li>انقر على زر "حفظ التغييرات".</li>
+                                </ol>
+                                
+                                <h4 class="mt-4">حذف منتج</h4>
+                                <div class="alert alert-danger mb-3">
+                                    <i class="fas fa-exclamation-circle me-2"></i>
+                                    <strong>تحذير:</strong> حذف المنتج سيؤدي إلى إزالته نهائياً من النظام. تأكد من أنك تريد حذفه بالفعل.
+                                </div>
+                                <ol>
+                                    <li>ابحث عن المنتج الذي تريد حذفه في قائمة المنتجات.</li>
+                                    <li>انقر على زر "حذف" بجوار المنتج.</li>
+                                    <li>قم بتأكيد الحذف في النافذة المنبثقة.</li>
+                                </ol>
+                                
+                                <h4 class="mt-4">إدارة التصنيفات</h4>
+                                <p>
+                                    يمكنك إنشاء وتعديل وحذف تصنيفات المنتجات من خلال قسم "إدارة التصنيفات" في صفحة المنتجات.
+                                </p>
+                            </div>
+                            
+                            <!-- Inventory Help -->
+                            <div class="tab-pane fade" id="inventory-help">
+                                <h2 class="mb-4">دليل إدارة المخزون</h2>
+                                
+                                <p>
+                                    تتيح لك وحدة إدارة المخزون تتبع الكميات المدخلة والمخرجة وتنبيهات المخزون المنخفض. فيما يلي شرح مفصل لكيفية استخدام هذه الوحدة:
+                                </p>
+                                
+                                <h4 class="mt-4">عرض المخزون</h4>
+                                <p>
+                                    يمكنك عرض حالة المخزون الحالية لجميع المنتجات من خلال صفحة "إدارة المخزون". يتم عرض المعلومات التالية:
+                                </p>
+                                <ul>
+                                    <li>اسم المنتج</li>
+                                    <li>الكمية المتوفرة</li>
+                                    <li>الحد الأدنى للمخزون</li>
+                                    <li>حالة المخزون (متوفر، منخفض، نفذ)</li>
+                                    <li>آخر تحديث للمخزون</li>
+                                </ul>
+                                
+                                <h4 class="mt-4">تعديل كمية المخزون</h4>
+                                <ol>
+                                    <li>ابحث عن المنتج الذي تريد تعديل مخزونه في قائمة المخزون.</li>
+                                    <li>انقر على زر "تعديل" بجوار المنتج.</li>
+                                    <li>أدخل الكمية الجديدة أو قم بزيادة/تخفيض الكمية الحالية.</li>
+                                    <li>أدخل سبب التعديل (استلام بضاعة، تسوية مخزون، إلخ).</li>
+                                    <li>انقر على زر "حفظ".</li>
+                                </ol>
+                                
+                                <h4 class="mt-4">تنبيهات المخزون المنخفض</h4>
+                                <p>
+                                    يقوم النظام تلقائياً بتنبيهك عندما ينخفض مخزون أي منتج عن الحد الأدنى المحدد. يمكنك تعديل إعدادات التنبيهات من خلال:
+                                </p>
+                                <ol>
+                                    <li>انتقل إلى "إعدادات المخزون".</li>
+                                    <li>حدد الحد الأدنى للمخزون لكل منتج أو مجموعة منتجات.</li>
+                                    <li>حدد طريقة التنبيه (داخل النظام، بريد إلكتروني، إلخ).</li>
+                                    <li>انقر على زر "حفظ الإعدادات".</li>
+                                </ol>
+                                
+                                <div class="alert alert-warning mt-3">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    <strong>ملاحظة:</strong> تأكد من تحديث بيانات المخزون بانتظام للحصول على تنبيهات دقيقة.
+                                </div>
+                            </div>
+                            
+                            <!-- Other tabs content -->
+                            <div class="tab-pane fade" id="orders-help">
+                                <h2 class="mb-4">دليل إدارة الطلبيات</h2>
+                                <p>محتوى دليل إدارة الطلبيات سيظهر هنا...</p>
+                            </div>
+                            
+                            <div class="tab-pane fade" id="shipping-help">
+                                <h2 class="mb-4">دليل إدارة الشحن</h2>
+                                <p>محتوى دليل إدارة الشحن سيظهر هنا...</p>
+                            </div>
+                            
+                            <div class="tab-pane fade" id="reports-help">
+                                <h2 class="mb-4">دليل التقارير</h2>
+                                <p>محتوى دليل التقارير سيظهر هنا...</p>
+                            </div>
+                            
+                            <div class="tab-pane fade" id="users-help">
+                                <h2 class="mb-4">دليل إدارة المستخدمين</h2>
+                                <p>محتوى دليل إدارة المستخدمين سيظهر هنا...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5 class="fw-bold mb-3">نظام إدارة المخازن</h5>
+                    <p class="text-muted">نظام متكامل لإدارة المخازن والمنتجات والطلبيات بكفاءة عالية.</p>
+                    <div class="d-flex gap-2 mt-3">
+                        <a href="#" class="btn btn-sm btn-outline-primary rounded-circle">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="btn btn-sm btn-outline-primary rounded-circle">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="btn btn-sm btn-outline-primary rounded-circle">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="btn btn-sm btn-outline-primary rounded-circle">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+                    <h5 class="fw-bold mb-3">روابط سريعة</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="dashboard.html" class="text-decoration-none text-muted">لوحة التحكم</a></li>
+                        <li class="mb-2"><a href="products.html" class="text-decoration-none text-muted">المنتجات</a></li>
+                        <li class="mb-2"><a href="inventory.html" class="text-decoration-none text-muted">المخزون</a></li>
+                        <li class="mb-2"><a href="orders.html" class="text-decoration-none text-muted">الطلبيات</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0">
+                    <h5 class="fw-bold mb-3">الدعم</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="help.html" class="text-decoration-none text-muted">المساعدة</a></li>
+                        <li class="mb-2"><a href="faq.html" class="text-decoration-none text-muted">الأسئلة الشائعة</a></li>
+                        <li class="mb-2"><a href="contact.html" class="text-decoration-none text-muted">اتصل بنا</a></li>
+                        <li class="mb-2"><a href="privacy.html" class="text-decoration-none text-muted">سياسة الخصوصية</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <h5 class="fw-bold mb-3">اشترك في نشرتنا</h5>
+                    <p class="text-muted">احصل على آخر التحديثات والعروض</p>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="البريد الإلكتروني" aria-label="البريد الإلكتروني">
+                        <button class="btn btn-primary" type="button">اشتراك</button>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center">
+                <p class="mb-0">© 2025 نظام إدارة المخازن -تطوير المهندس محمد عبالمنعم- جميع الحقوق محفوظة</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الطلبيات - نظام إدارة المخازن</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-blue-600 text-white p-4 shadow-md">
+        <div class="container mx-auto">
+            <h1 class="text-3xl font-bold">نظام إدارة المخازن</h1>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-blue-700 text-white shadow-md">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-3">
+                <a href="index.html" class="text-xl font-bold">نظام إدارة المخازن</a>
+
+                <div class="hidden md:flex space-x-4 space-x-reverse">
+                    <a href="dashboard.html" class="px-3 py-2 rounded hover:bg-blue-600">لوحة التحكم</a>
+                    <a href="products.html" class="px-3 py-2 rounded hover:bg-blue-600">المنتجات</a>
+                    <a href="inventory.html" class="px-3 py-2 rounded hover:bg-blue-600">المخزون</a>
+                    <a href="orders.html" class="px-3 py-2 rounded bg-blue-800">الطلبيات</a>
+                    <a href="shipping.html" class="px-3 py-2 rounded hover:bg-blue-600">الشحن</a>
+                    <a href="reports.html" class="px-3 py-2 rounded hover:bg-blue-600">التقارير</a>
+                    <a href="users.html" class="px-3 py-2 rounded hover:bg-blue-600">المستخدمين</a>
+                </div>
+
+                <div class="md:hidden">
+                    <!-- Mobile menu button -->
+                    <button class="flex items-center px-3 py-2 border rounded border-blue-400 hover:text-white hover:border-white">
+                        <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <title>القائمة</title>
+                            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-6">
+        <div class="space-y-6">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold">إدارة الطلبيات</h1>
+                <button
+                    onclick="toggleOrderModal()"
+                    class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
+                >
+                    إنشاء طلبية جديدة
+                </button>
+            </div>
+
+            <!-- Search and Filter -->
+            <div class="bg-white p-4 rounded-lg shadow">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label for="search" class="block text-sm font-medium text-gray-700 mb-1">بحث</label>
+                        <input
+                            type="text"
+                            id="search"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                            placeholder="ابحث عن طلبية أو عميل..."
+                        />
+                    </div>
+                    <div>
+                        <label for="status" class="block text-sm font-medium text-gray-700 mb-1">الحالة</label>
+                        <select
+                            id="status"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                        >
+                            <option value="">جميع الحالات</option>
+                            <option value="processing">قيد المعالجة</option>
+                            <option value="shipping">قيد الشحن</option>
+                            <option value="completed">مكتمل</option>
+                            <option value="cancelled">ملغى</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="date" class="block text-sm font-medium text-gray-700 mb-1">التاريخ</label>
+                        <input
+                            type="date"
+                            id="date"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders Table -->
+            <div class="bg-white p-6 rounded-lg shadow overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">رقم الطلبية</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">العميل</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">التاريخ</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الحالة</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الإجمالي</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">ORD-1001</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">شركة الأمل للتجارة</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023/05/15</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                        قيد المعالجة
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$2,499</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2 space-x-reverse">
+                                    <button
+                                        onclick="viewOrderDetails('ORD-1001', 'شركة الأمل للتجارة', '2023/05/15', 'قيد المعالجة', 2499)"
+                                        class="text-blue-600 hover:text-blue-900"
+                                    >
+                                        عرض التفاصيل
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-900">تحديث الحالة</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">ORD-1002</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">مؤسسة النور</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023/05/14</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        مكتمل
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$1,598</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2 space-x-reverse">
+                                    <button
+                                        onclick="viewOrderDetails('ORD-1002', 'مؤسسة النور', '2023/05/14', 'مكتمل', 1598)"
+                                        class="text-blue-600 hover:text-blue-900"
+                                    >
+                                        عرض التفاصيل
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-900">تحديث الحالة</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">ORD-1003</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">شركة التقنية الحديثة</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023/05/13</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                        قيد الشحن
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$3,495</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2 space-x-reverse">
+                                    <button
+                                        onclick="viewOrderDetails('ORD-1003', 'شركة التقنية الحديثة', '2023/05/13', 'قيد الشحن', 3495)"
+                                        class="text-blue-600 hover:text-blue-900"
+                                    >
+                                        عرض التفاصيل
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-900">تحديث الحالة</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">ORD-1004</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">مكتبة المستقبل</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023/05/12</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        مكتمل
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$1,647</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2 space-x-reverse">
+                                    <button
+                                        onclick="viewOrderDetails('ORD-1004', 'مكتبة المستقبل', '2023/05/12', 'مكتمل', 1647)"
+                                        class="text-blue-600 hover:text-blue-900"
+                                    >
+                                        عرض التفاصيل
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-900">تحديث الحالة</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Create Order Modal -->
+    <div id="createOrderModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold">إنشاء طلبية جديدة</h2>
+                    <button
+                        onclick="toggleOrderModal()"
+                        class="text-gray-500 hover:text-gray-700"
+                    >
+                        &times;
+                    </button>
+                </div>
+
+                <form class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="customer" class="block text-sm font-medium text-gray-700 mb-1">العميل</label>
+                            <select
+                                id="customer"
+                                class="w-full border border-gray-300 rounded-md px-3 py-2"
+                            >
+                                <option value="">اختر العميل</option>
+                                <option value="1">شركة الأمل للتجارة</option>
+                                <option value="2">مؤسسة النور</option>
+                                <option value="3">شركة التقنية الحديثة</option>
+                                <option value="4">مكتبة المستقبل</option>
+                                <option value="5">شركة الإبداع</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="orderDate" class="block text-sm font-medium text-gray-700 mb-1">تاريخ الطلبية</label>
+                            <input
+                                type="date"
+                                id="orderDate"
+                                class="w-full border border-gray-300 rounded-md px-3 py-2"
+                            />
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-medium mb-2">المنتجات</h3>
+                        <div class="border rounded-md overflow-hidden">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">المنتج</th>
+                                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الكمية</th>
+                                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">السعر</th>
+                                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الإجمالي</th>
+                                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-6 py-4">
+                                            <select class="w-full border border-gray-300 rounded-md px-3 py-2">
+                                                <option value="">اختر المنتج</option>
+                                                <option value="1">لابتوب HP Pavilion</option>
+                                                <option value="2">هاتف سامسونج Galaxy S21</option>
+                                                <option value="3">سماعات Apple AirPods Pro</option>
+                                                <option value="4">تلفزيون سامسونج 55 بوصة</option>
+                                                <option value="5">كاميرا كانون DSLR</option>
+                                            </select>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <input
+                                                type="number"
+                                                min="1"
+                                                class="w-full border border-gray-300 rounded-md px-3 py-2"
+                                            />
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$899</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$899</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                            <button type="button" class="text-red-600 hover:text-red-900">حذف</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <button
+                            type="button"
+                            class="mt-2 text-blue-600 hover:text-blue-900"
+                        >
+                            + إضافة منتج
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="notes" class="block text-sm font-medium text-gray-700 mb-1">ملاحظات</label>
+                            <textarea
+                                id="notes"
+                                rows="3"
+                                class="w-full border border-gray-300 rounded-md px-3 py-2"
+                            ></textarea>
+                        </div>
+                        <div class="flex flex-col justify-end">
+                            <div class="bg-gray-50 p-4 rounded-md">
+                                <div class="flex justify-between mb-2">
+                                    <span class="font-medium">المجموع الفرعي:</span>
+                                    <span>$899</span>
+                                </div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="font-medium">الضريبة (15%):</span>
+                                    <span>$134.85</span>
+                                </div>
+                                <div class="flex justify-between font-bold text-lg">
+                                    <span>الإجمالي:</span>
+                                    <span>$1,033.85</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end space-x-2 space-x-reverse">
+                        <button
+                            type="button"
+                            onclick="toggleOrderModal()"
+                            class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded"
+                        >
+                            إلغاء
+                        </button>
+                        <button
+                            type="submit"
+                            class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
+                        >
+                            حفظ الطلبية
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div id="orderDetailsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold">تفاصيل الطلبية #<span id="orderIdDetails"></span></h2>
+                    <button
+                        onclick="closeOrderDetails()"
+                        class="text-gray-500 hover:text-gray-700"
+                    >
+                        &times;
+                    </button>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500">العميل</h3>
+                            <p class="mt-1" id="customerDetails"></p>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500">تاريخ الطلبية</h3>
+                            <p class="mt-1" id="dateDetails"></p>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500">حالة الطلبية</h3>
+                            <p class="mt-1" id="statusDetails"></p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-medium mb-2">المنتجات</h3>
+                        <div class="border rounded-md overflow-hidden">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">المنتج</th>
+                                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الكمية</th>
+                                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">السعر</th>
+                                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الإجمالي</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <!-- سيتم ملء هذا الجزء ديناميكيًا -->
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">لابتوب HP Pavilion</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$899</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$1,798</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">سماعات Apple AirPods Pro</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">3</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$249</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$747</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between">
+                        <div>
+                            <h3 class="text-lg font-medium mb-2">ملاحظات</h3>
+                            <p class="text-gray-700">لا توجد ملاحظات</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-md w-64">
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">المجموع الفرعي:</span>
+                                <span id="subtotalDetails">$0</span>
+                            </div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">الضريبة (15%):</span>
+                                <span id="taxDetails">$0</span>
+                            </div>
+                            <div class="flex justify-between font-bold text-lg">
+                                <span>الإجمالي:</span>
+                                <span id="totalDetails">$0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end space-x-2 space-x-reverse">
+                        <button
+                            type="button"
+                            onclick="closeOrderDetails()"
+                            class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded"
+                        >
+                            إغلاق
+                        </button>
+                        <button
+                            type="button"
+                            class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
+                        >
+                            طباعة الفاتورة
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 p-4 text-center text-gray-600 mt-8">
+        <p>© 2025 نظام إدارة المخازن -تطوير المهندس محمد عبالمنعم- جميع الحقوق محفوظة</p>
+    </footer>
+
+    <script>
+        // No need for dynamic year as it's fixed to 2025
+
+        // Toggle Create Order Modal
+        function toggleOrderModal() {
+            const modal = document.getElementById('createOrderModal');
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        // View Order Details
+        function viewOrderDetails(orderId, customer, date, status, total) {
+            document.getElementById('orderIdDetails').textContent = orderId;
+            document.getElementById('customerDetails').textContent = customer;
+            document.getElementById('dateDetails').textContent = date;
+
+            // Set status with appropriate styling
+            let statusHTML = '';
+            if (status === 'قيد المعالجة') {
+                statusHTML = '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">قيد المعالجة</span>';
+            } else if (status === 'قيد الشحن') {
+                statusHTML = '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">قيد الشحن</span>';
+            } else if (status === 'مكتمل') {
+                statusHTML = '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">مكتمل</span>';
+            } else if (status === 'ملغى') {
+                statusHTML = '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">ملغى</span>';
+            }
+            document.getElementById('statusDetails').innerHTML = statusHTML;
+
+            // Calculate and set totals
+            document.getElementById('subtotalDetails').textContent = '$' + total;
+            const tax = total * 0.15;
+            document.getElementById('taxDetails').textContent = '$' + tax.toFixed(2);
+            document.getElementById('totalDetails').textContent = '$' + (total + tax).toFixed(2);
+
+            // Show modal
+            document.getElementById('orderDetailsModal').classList.remove('hidden');
+        }
+
+        // Close Order Details Modal
+        function closeOrderDetails() {
+            document.getElementById('orderDetailsModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>

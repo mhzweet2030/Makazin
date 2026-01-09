@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة المخزون - نظام إدارة المخازن</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-blue-600 text-white p-4 shadow-md">
+        <div class="container mx-auto">
+            <h1 class="text-3xl font-bold">نظام إدارة المخازن</h1>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-blue-700 text-white shadow-md">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-3">
+                <a href="index.html" class="text-xl font-bold">نظام إدارة المخازن</a>
+
+                <div class="hidden md:flex space-x-4 space-x-reverse">
+                    <a href="dashboard.html" class="px-3 py-2 rounded hover:bg-blue-600">لوحة التحكم</a>
+                    <a href="products.html" class="px-3 py-2 rounded hover:bg-blue-600">المنتجات</a>
+                    <a href="inventory.html" class="px-3 py-2 rounded bg-blue-800">المخزون</a>
+                    <a href="orders.html" class="px-3 py-2 rounded hover:bg-blue-600">الطلبيات</a>
+                    <a href="shipping.html" class="px-3 py-2 rounded hover:bg-blue-600">الشحن</a>
+                    <a href="reports.html" class="px-3 py-2 rounded hover:bg-blue-600">التقارير</a>
+                    <a href="users.html" class="px-3 py-2 rounded hover:bg-blue-600">المستخدمين</a>
+                </div>
+
+                <div class="md:hidden">
+                    <!-- Mobile menu button -->
+                    <button class="flex items-center px-3 py-2 border rounded border-blue-400 hover:text-white hover:border-white">
+                        <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <title>القائمة</title>
+                            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-6">
+        <div class="space-y-6">
+            <h1 class="text-2xl font-bold">إدارة المخزون</h1>
+
+            <!-- Inventory Status -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-xl font-semibold mb-4">حالة المخزون</h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">المنتج</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الرمز</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الكمية الحالية</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الحد الأدنى</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">آخر تحديث</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الحالة</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">لابتوب HP Pavilion</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">LP-001</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">15</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">10</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023/05/10</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        متوفر
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <button
+                                        onclick="openAdjustModal('لابتوب HP Pavilion', 15)"
+                                        class="text-blue-600 hover:text-blue-900"
+                                    >
+                                        تعديل الكمية
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">هاتف سامسونج Galaxy S21</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">PH-002</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">28</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">15</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023/05/12</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        متوفر
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <button
+                                        onclick="openAdjustModal('هاتف سامسونج Galaxy S21', 28)"
+                                        class="text-blue-600 hover:text-blue-900"
+                                    >
+                                        تعديل الكمية
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">سماعات Apple AirPods Pro</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">AP-003</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">42</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">20</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023/05/08</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        متوفر
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <button
+                                        onclick="openAdjustModal('سماعات Apple AirPods Pro', 42)"
+                                        class="text-blue-600 hover:text-blue-900"
+                                    >
+                                        تعديل الكمية
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">تلفزيون سامسونج 55 بوصة</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">TV-004</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">10</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">5</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023/05/15</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        متوفر
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <button
+                                        onclick="openAdjustModal('تلفزيون سامسونج 55 بوصة', 10)"
+                                        class="text-blue-600 hover:text-blue-900"
+                                    >
+                                        تعديل الكمية
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">كاميرا كانون DSLR</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">CM-005</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">8</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">10</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023/05/11</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                        منخفض
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <button
+                                        onclick="openAdjustModal('كاميرا كانون DSLR', 8)"
+                                        class="text-blue-600 hover:text-blue-900"
+                                    >
+                                        تعديل الكمية
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Inventory Movements -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-xl font-semibold mb-4">حركات المخزون</h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">المنتج</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">نوع الحركة</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الكمية</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">التاريخ</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">المستخدم</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">لابتوب HP Pavilion</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        إضافة
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">5</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023/05/10 09:30</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">أحمد محمد</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">هاتف سامسونج Galaxy S21</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                        سحب
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023/05/12 14:15</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">سارة أحمد</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">سماعات Apple AirPods Pro</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        إضافة
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">10</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023/05/08 11:45</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">محمد علي</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">كاميرا كانون DSLR</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                        سحب
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">1</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023/05/11 16:20</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">خالد عمر</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">تلفزيون سامسونج 55 بوصة</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        إضافة
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">3</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023/05/15 10:10</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">أحمد محمد</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Adjust Inventory Modal -->
+    <div id="adjustInventoryModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold">تعديل كمية المخزون</h2>
+                    <button
+                        onclick="closeAdjustModal()"
+                        class="text-gray-500 hover:text-gray-700"
+                    >
+                        &times;
+                    </button>
+                </div>
+
+                <form class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">المنتج</label>
+                        <p id="adjustProductName" class="text-gray-900"></p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">الكمية الحالية</label>
+                        <p id="adjustCurrentQuantity" class="text-gray-900"></p>
+                    </div>
+
+                    <div>
+                        <label for="adjustmentType" class="block text-sm font-medium text-gray-700 mb-1">نوع التعديل</label>
+                        <select
+                            id="adjustmentType"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                        >
+                            <option value="add">إضافة</option>
+                            <option value="remove">سحب</option>
+                            <option value="set">تعيين قيمة محددة</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="adjustmentQuantity" class="block text-sm font-medium text-gray-700 mb-1">الكمية</label>
+                        <input
+                            type="number"
+                            id="adjustmentQuantity"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                            min="1"
+                        />
+                    </div>
+
+                    <div>
+                        <label for="adjustmentReason" class="block text-sm font-medium text-gray-700 mb-1">سبب التعديل</label>
+                        <select
+                            id="adjustmentReason"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                        >
+                            <option value="">اختر السبب</option>
+                            <option value="purchase">شراء جديد</option>
+                            <option value="sale">بيع</option>
+                            <option value="return">إرجاع</option>
+                            <option value="damage">تلف</option>
+                            <option value="inventory-count">جرد المخزون</option>
+                            <option value="other">أخرى</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="adjustmentNotes" class="block text-sm font-medium text-gray-700 mb-1">ملاحظات</label>
+                        <textarea
+                            id="adjustmentNotes"
+                            rows="3"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                        ></textarea>
+                    </div>
+
+                    <div class="flex justify-end space-x-2 space-x-reverse">
+                        <button
+                            type="button"
+                            onclick="closeAdjustModal()"
+                            class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded"
+                        >
+                            إلغاء
+                        </button>
+                        <button
+                            type="submit"
+                            class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
+                        >
+                            حفظ التعديل
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 p-4 text-center text-gray-600 mt-8">
+        <p>© 2025 نظام إدارة المخازن -تطوير المهندس محمد عبالمنعم- جميع الحقوق محفوظة</p>
+    </footer>
+
+    <script>
+        // No need for dynamic year as it's fixed to 2025
+
+        // Open Adjust Inventory Modal
+        function openAdjustModal(productName, currentQuantity) {
+            document.getElementById('adjustProductName').textContent = productName;
+            document.getElementById('adjustCurrentQuantity').textContent = currentQuantity;
+            document.getElementById('adjustInventoryModal').classList.remove('hidden');
+        }
+
+        // Close Adjust Inventory Modal
+        function closeAdjustModal() {
+            document.getElementById('adjustInventoryModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - نظام إدارة المخازن</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-blue-600 text-white p-4 shadow-md">
+        <div class="container mx-auto">
+            <h1 class="text-3xl font-bold">نظام إدارة المخازن</h1>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-blue-700 text-white shadow-md">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-3">
+                <a href="index.html" class="text-xl font-bold">نظام إدارة المخازن</a>
+
+                <div class="hidden md:flex space-x-4 space-x-reverse">
+                    <a href="dashboard.html" class="px-3 py-2 rounded bg-blue-800">لوحة التحكم</a>
+                    <a href="products.html" class="px-3 py-2 rounded hover:bg-blue-600">المنتجات</a>
+                    <a href="inventory.html" class="px-3 py-2 rounded hover:bg-blue-600">المخزون</a>
+                    <a href="orders.html" class="px-3 py-2 rounded hover:bg-blue-600">الطلبيات</a>
+                    <a href="shipping.html" class="px-3 py-2 rounded hover:bg-blue-600">الشحن</a>
+                    <a href="reports.html" class="px-3 py-2 rounded hover:bg-blue-600">التقارير</a>
+                    <a href="users.html" class="px-3 py-2 rounded hover:bg-blue-600">المستخدمين</a>
+                </div>
+
+                <div class="md:hidden">
+                    <!-- Mobile menu button -->
+                    <button class="flex items-center px-3 py-2 border rounded border-blue-400 hover:text-white hover:border-white">
+                        <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <title>القائمة</title>
+                            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-6">
+        <div class="space-y-6">
+            <h1 class="text-2xl font-bold">لوحة التحكم</h1>
+
+            <!-- Summary Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <h2 class="text-lg font-semibold text-gray-700">إجمالي المنتجات</h2>
+                    <p class="text-3xl font-bold text-blue-600">120</p>
+                </div>
+
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <h2 class="text-lg font-semibold text-gray-700">الطلبيات النشطة</h2>
+                    <p class="text-3xl font-bold text-green-600">15</p>
+                </div>
+
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <h2 class="text-lg font-semibold text-gray-700">منتجات منخفضة المخزون</h2>
+                    <p class="text-3xl font-bold text-red-600">8</p>
+                </div>
+
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <h2 class="text-lg font-semibold text-gray-700">قيمة المخزون</h2>
+                    <p class="text-3xl font-bold text-purple-600">$45,250</p>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-xl font-semibold mb-4">النشاطات الأخيرة</h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">النشاط</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">المستخدم</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">التاريخ</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">إضافة منتج جديد: لابتوب HP</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">أحمد محمد</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023/05/15 10:30</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">تحديث كمية المخزون: هاتف سامسونج</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">سارة أحمد</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023/05/15 09:45</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">إنشاء طلبية جديدة #1234</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">محمد علي</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023/05/14 16:20</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">تحديث حالة الشحن للطلبية #1230</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">خالد عمر</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023/05/14 14:15</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Low Stock Alert -->
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-xl font-semibold mb-4">تنبيهات المخزون المنخفض</h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">المنتج</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الكمية الحالية</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الحد الأدنى</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الإجراء</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">لابتوب HP Pavilion</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-red-500 font-medium">2</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">10</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    <button class="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded">طلب المزيد</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">هاتف سامسونج Galaxy S21</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-red-500 font-medium">3</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">15</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    <button class="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded">طلب المزيد</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">سماعات Apple AirPods Pro</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-red-500 font-medium">5</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">20</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    <button class="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded">طلب المزيد</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 p-4 text-center text-gray-600 mt-8">
+        <p>© 2025 نظام إدارة المخازن -تطوير المهندس محمد عبالمنعم- جميع الحقوق محفوظة</p>
+    </footer>
+
+    <script>
+        // No need for dynamic year as it's fixed to 2025
+    </script>
+</body>
+</html>

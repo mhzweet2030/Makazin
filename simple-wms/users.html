@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة المستخدمين - نظام إدارة المخازن</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-blue-600 text-white p-4 shadow-md">
+        <div class="container mx-auto">
+            <h1 class="text-3xl font-bold">نظام إدارة المخازن</h1>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-blue-700 text-white shadow-md">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-3">
+                <a href="index.html" class="text-xl font-bold">نظام إدارة المخازن</a>
+
+                <div class="hidden md:flex space-x-4 space-x-reverse">
+                    <a href="dashboard.html" class="px-3 py-2 rounded hover:bg-blue-600">لوحة التحكم</a>
+                    <a href="products.html" class="px-3 py-2 rounded hover:bg-blue-600">المنتجات</a>
+                    <a href="inventory.html" class="px-3 py-2 rounded hover:bg-blue-600">المخزون</a>
+                    <a href="orders.html" class="px-3 py-2 rounded hover:bg-blue-600">الطلبيات</a>
+                    <a href="shipping.html" class="px-3 py-2 rounded hover:bg-blue-600">الشحن</a>
+                    <a href="reports.html" class="px-3 py-2 rounded hover:bg-blue-600">التقارير</a>
+                    <a href="users.html" class="px-3 py-2 rounded bg-blue-800">المستخدمين</a>
+                </div>
+
+                <div class="md:hidden">
+                    <!-- Mobile menu button -->
+                    <button class="flex items-center px-3 py-2 border rounded border-blue-400 hover:text-white hover:border-white">
+                        <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <title>القائمة</title>
+                            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-6">
+        <div class="space-y-6">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold">إدارة المستخدمين</h1>
+                <button
+                    onclick="toggleAddUserModal()"
+                    class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
+                >
+                    إضافة مستخدم جديد
+                </button>
+            </div>
+
+            <!-- Search and Filter -->
+            <div class="bg-white p-4 rounded-lg shadow">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label for="search" class="block text-sm font-medium text-gray-700 mb-1">بحث</label>
+                        <input
+                            type="text"
+                            id="search"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                            placeholder="ابحث عن مستخدم..."
+                        />
+                    </div>
+                    <div>
+                        <label for="role" class="block text-sm font-medium text-gray-700 mb-1">الدور</label>
+                        <select
+                            id="role"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                        >
+                            <option value="">جميع الأدوار</option>
+                            <option value="admin">مدير</option>
+                            <option value="manager">مشرف</option>
+                            <option value="warehouse">موظف مستودع</option>
+                            <option value="shipping">موظف شحن</option>
+                            <option value="viewer">مراقب فقط</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="status" class="block text-sm font-medium text-gray-700 mb-1">الحالة</label>
+                        <select
+                            id="status"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                        >
+                            <option value="">جميع الحالات</option>
+                            <option value="active">نشط</option>
+                            <option value="inactive">غير نشط</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Table -->
+            <div class="bg-white p-6 rounded-lg shadow overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الاسم</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">البريد الإلكتروني</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الدور</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">آخر تسجيل دخول</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الحالة</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10">
+                                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/1.jpg" alt="">
+                                        </div>
+                                        <div class="mr-4">
+                                            <div class="text-sm font-medium text-gray-900">أحمد محمد</div>
+                                            <div class="text-sm text-gray-500">مدير النظام</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">ahmed@example.com</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
+                                        مدير
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023/05/15 10:30</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        نشط
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2 space-x-reverse">
+                                    <button
+                                        onclick="editUser(1)"
+                                        class="text-blue-600 hover:text-blue-900"
+                                    >
+                                        تعديل
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-900">تعطيل</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10">
+                                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/women/2.jpg" alt="">
+                                        </div>
+                                        <div class="mr-4">
+                                            <div class="text-sm font-medium text-gray-900">سارة أحمد</div>
+                                            <div class="text-sm text-gray-500">مشرفة المخزون</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">sara@example.com</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                        مشرف
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023/05/15 09:45</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        نشط
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2 space-x-reverse">
+                                    <button
+                                        onclick="editUser(2)"
+                                        class="text-blue-600 hover:text-blue-900"
+                                    >
+                                        تعديل
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-900">تعطيل</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10">
+                                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/3.jpg" alt="">
+                                        </div>
+                                        <div class="mr-4">
+                                            <div class="text-sm font-medium text-gray-900">محمد علي</div>
+                                            <div class="text-sm text-gray-500">موظف مستودع</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">mohamed@example.com</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        موظف مستودع
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023/05/14 16:20</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        نشط
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2 space-x-reverse">
+                                    <button
+                                        onclick="editUser(3)"
+                                        class="text-blue-600 hover:text-blue-900"
+                                    >
+                                        تعديل
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-900">تعطيل</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10">
+                                            <img class="h-10 w-10 rounded-full" src="https://randomuser.me/api/portraits/men/4.jpg" alt="">
+                                        </div>
+                                        <div class="mr-4">
+                                            <div class="text-sm font-medium text-gray-900">خالد عمر</div>
+                                            <div class="text-sm text-gray-500">موظف شحن</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">khaled@example.com</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                        موظف شحن
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023/05/14 14:15</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        نشط
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2 space-x-reverse">
+                                    <button
+                                        onclick="editUser(4)"
+                                        class="text-blue-600 hover:text-blue-900"
+                                    >
+                                        تعديل
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-900">تعطيل</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add User Modal -->
+    <div id="addUserModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold">إضافة مستخدم جديد</h2>
+                    <button
+                        onclick="toggleAddUserModal()"
+                        class="text-gray-500 hover:text-gray-700"
+                    >
+                        &times;
+                    </button>
+                </div>
+
+                <form class="space-y-4" onsubmit="addUser(event)">
+                    <div>
+                        <label for="fullName" class="block text-sm font-medium text-gray-700 mb-1">الاسم الكامل</label>
+                        <input
+                            type="text"
+                            id="fullName"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                            placeholder="أدخل الاسم الكامل"
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">البريد الإلكتروني</label>
+                        <input
+                            type="email"
+                            id="email"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                            placeholder="أدخل البريد الإلكتروني"
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">كلمة المرور</label>
+                        <input
+                            type="password"
+                            id="password"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                            placeholder="أدخل كلمة المرور"
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-1">تأكيد كلمة المرور</label>
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                            placeholder="أعد إدخال كلمة المرور"
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label for="userRole" class="block text-sm font-medium text-gray-700 mb-1">الدور</label>
+                        <select
+                            id="userRole"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                            required
+                        >
+                            <option value="">اختر الدور</option>
+                            <option value="admin">مدير</option>
+                            <option value="manager">مشرف</option>
+                            <option value="warehouse">موظف مستودع</option>
+                            <option value="shipping">موظف شحن</option>
+                            <option value="viewer">مراقب فقط</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="userStatus" class="block text-sm font-medium text-gray-700 mb-1">الحالة</label>
+                        <select
+                            id="userStatus"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                            required
+                        >
+                            <option value="active">نشط</option>
+                            <option value="inactive">غير نشط</option>
+                        </select>
+                    </div>
+
+                    <div class="flex justify-end space-x-2 space-x-reverse">
+                        <button
+                            type="button"
+                            onclick="toggleAddUserModal()"
+                            class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded"
+                        >
+                            إلغاء
+                        </button>
+                        <button
+                            type="submit"
+                            class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
+                        >
+                            إضافة المستخدم
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div id="editUserModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold">تعديل بيانات المستخدم</h2>
+                    <button
+                        onclick="closeEditUserModal()"
+                        class="text-gray-500 hover:text-gray-700"
+                    >
+                        &times;
+                    </button>
+                </div>
+
+                <form class="space-y-4" onsubmit="updateUser(event)">
+                    <div>
+                        <label for="editFullName" class="block text-sm font-medium text-gray-700 mb-1">الاسم الكامل</label>
+                        <input
+                            type="text"
+                            id="editFullName"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                            value="أحمد محمد"
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label for="editEmail" class="block text-sm font-medium text-gray-700 mb-1">البريد الإلكتروني</label>
+                        <input
+                            type="email"
+                            id="editEmail"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                            value="ahmed@example.com"
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label for="editPassword" class="block text-sm font-medium text-gray-700 mb-1">كلمة المرور الجديدة (اتركها فارغة إذا لم ترغب في تغييرها)</label>
+                        <input
+                            type="password"
+                            id="editPassword"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                            placeholder="أدخل كلمة المرور الجديدة"
+                        />
+                    </div>
+
+                    <div>
+                        <label for="editUserRole" class="block text-sm font-medium text-gray-700 mb-1">الدور</label>
+                        <select
+                            id="editUserRole"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                            required
+                        >
+                            <option value="admin" selected>مدير</option>
+                            <option value="manager">مشرف</option>
+                            <option value="warehouse">موظف مستودع</option>
+                            <option value="shipping">موظف شحن</option>
+                            <option value="viewer">مراقب فقط</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="editUserStatus" class="block text-sm font-medium text-gray-700 mb-1">الحالة</label>
+                        <select
+                            id="editUserStatus"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                            required
+                        >
+                            <option value="active" selected>نشط</option>
+                            <option value="inactive">غير نشط</option>
+                        </select>
+                    </div>
+
+                    <div class="flex justify-end space-x-2 space-x-reverse">
+                        <button
+                            type="button"
+                            onclick="closeEditUserModal()"
+                            class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded"
+                        >
+                            إلغاء
+                        </button>
+                        <button
+                            type="submit"
+                            class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
+                        >
+                            حفظ التغييرات
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 p-4 text-center text-gray-600 mt-8">
+        <p>© 2025 نظام إدارة المخازن -تطوير المهندس محمد عبالمنعم- جميع الحقوق محفوظة</p>
+    </footer>
+
+    <script>
+        // No need for dynamic year as it's fixed to 2025
+
+        // Toggle Add User Modal
+        function toggleAddUserModal() {
+            const modal = document.getElementById('addUserModal');
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        // Add User
+        function addUser(event) {
+            // منع السلوك الافتراضي للنموذج (إعادة تحميل الصفحة)
+            event.preventDefault();
+
+            // الحصول على قيم الحقول
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const role = document.getElementById('userRole').value;
+            const status = document.getElementById('userStatus').value;
+
+            // التحقق من تطابق كلمات المرور
+            if (password !== confirmPassword) {
+                alert('كلمة المرور وتأكيد كلمة المرور غير متطابقين');
+                return;
+            }
+
+            // في تطبيق حقيقي، سنقوم بإرسال البيانات إلى الخادم
+            // لكن في هذا العرض التوضيحي، سنعرض رسالة نجاح فقط
+            alert('تم إضافة المستخدم بنجاح: ' + fullName);
+
+            // إغلاق النافذة المنبثقة
+            toggleAddUserModal();
+
+            // إعادة تعيين النموذج
+            document.getElementById('fullName').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('confirmPassword').value = '';
+            document.getElementById('userRole').value = '';
+            document.getElementById('userStatus').value = 'active';
+        }
+
+        // Edit User
+        function editUser(userId) {
+            // In a real application, you would fetch the user data based on the ID
+            // For this demo, we'll just show the modal with some default values
+            document.getElementById('editUserModal').classList.remove('hidden');
+        }
+
+        // Close Edit User Modal
+        function closeEditUserModal() {
+            document.getElementById('editUserModal').classList.add('hidden');
+        }
+
+        // Update User
+        function updateUser(event) {
+            // منع السلوك الافتراضي للنموذج (إعادة تحميل الصفحة)
+            event.preventDefault();
+
+            // الحصول على قيم الحقول
+            const fullName = document.getElementById('editFullName').value;
+            const email = document.getElementById('editEmail').value;
+            const password = document.getElementById('editPassword').value;
+            const role = document.getElementById('editUserRole').value;
+            const status = document.getElementById('editUserStatus').value;
+
+            // في تطبيق حقيقي، سنقوم بإرسال البيانات إلى الخادم
+            // لكن في هذا العرض التوضيحي، سنعرض رسالة نجاح فقط
+            alert('تم تحديث بيانات المستخدم بنجاح: ' + fullName);
+
+            // إغلاق النافذة المنبثقة
+            closeEditUserModal();
+        }
+    </script>
+</body>
+</html>

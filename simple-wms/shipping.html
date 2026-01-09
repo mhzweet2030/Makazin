@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الشحن - نظام إدارة المخازن</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-blue-600 text-white p-4 shadow-md">
+        <div class="container mx-auto">
+            <h1 class="text-3xl font-bold">نظام إدارة المخازن</h1>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-blue-700 text-white shadow-md">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-3">
+                <a href="index.html" class="text-xl font-bold">نظام إدارة المخازن</a>
+
+                <div class="hidden md:flex space-x-4 space-x-reverse">
+                    <a href="dashboard.html" class="px-3 py-2 rounded hover:bg-blue-600">لوحة التحكم</a>
+                    <a href="products.html" class="px-3 py-2 rounded hover:bg-blue-600">المنتجات</a>
+                    <a href="inventory.html" class="px-3 py-2 rounded hover:bg-blue-600">المخزون</a>
+                    <a href="orders.html" class="px-3 py-2 rounded hover:bg-blue-600">الطلبيات</a>
+                    <a href="shipping.html" class="px-3 py-2 rounded bg-blue-800">الشحن</a>
+                    <a href="reports.html" class="px-3 py-2 rounded hover:bg-blue-600">التقارير</a>
+                    <a href="users.html" class="px-3 py-2 rounded hover:bg-blue-600">المستخدمين</a>
+                </div>
+
+                <div class="md:hidden">
+                    <!-- Mobile menu button -->
+                    <button class="flex items-center px-3 py-2 border rounded border-blue-400 hover:text-white hover:border-white">
+                        <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <title>القائمة</title>
+                            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-6">
+        <div class="space-y-6">
+            <h1 class="text-2xl font-bold">إدارة الشحن</h1>
+
+            <!-- Search and Filter -->
+            <div class="bg-white p-4 rounded-lg shadow">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label for="search" class="block text-sm font-medium text-gray-700 mb-1">بحث</label>
+                        <input
+                            type="text"
+                            id="search"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                            placeholder="ابحث عن طلبية أو عميل..."
+                        />
+                    </div>
+                    <div>
+                        <label for="status" class="block text-sm font-medium text-gray-700 mb-1">حالة الشحن</label>
+                        <select
+                            id="status"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                        >
+                            <option value="">جميع الحالات</option>
+                            <option value="pending">قيد التجهيز</option>
+                            <option value="shipped">تم الشحن</option>
+                            <option value="delivered">تم التسليم</option>
+                            <option value="returned">مرتجع</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="shipping-company" class="block text-sm font-medium text-gray-700 mb-1">شركة الشحن</label>
+                        <select
+                            id="shipping-company"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                        >
+                            <option value="">جميع الشركات</option>
+                            <option value="aramex">أرامكس</option>
+                            <option value="dhl">DHL</option>
+                            <option value="fedex">FedEx</option>
+                            <option value="spl">البريد السعودي</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shipments Table -->
+            <div class="bg-white p-6 rounded-lg shadow overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">رقم الشحنة</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">رقم الطلبية</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">العميل</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">تاريخ الشحن</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">شركة الشحن</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">رقم التتبع</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الحالة</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">SHP-1001</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">ORD-1001</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">شركة الأمل للتجارة</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023/05/16</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">أرامكس</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">ARX123456789</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                        قيد التجهيز
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2 space-x-reverse">
+                                    <button
+                                        onclick="viewShipmentDetails('SHP-1001')"
+                                        class="text-blue-600 hover:text-blue-900"
+                                    >
+                                        عرض التفاصيل
+                                    </button>
+                                    <button
+                                        onclick="updateShipmentStatus('SHP-1001')"
+                                        class="text-green-600 hover:text-green-900"
+                                    >
+                                        تحديث الحالة
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">SHP-1002</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">ORD-1003</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">شركة التقنية الحديثة</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023/05/14</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">DHL</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">DHL987654321</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                        تم الشحن
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2 space-x-reverse">
+                                    <button
+                                        onclick="viewShipmentDetails('SHP-1002')"
+                                        class="text-blue-600 hover:text-blue-900"
+                                    >
+                                        عرض التفاصيل
+                                    </button>
+                                    <button
+                                        onclick="updateShipmentStatus('SHP-1002')"
+                                        class="text-green-600 hover:text-green-900"
+                                    >
+                                        تحديث الحالة
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">SHP-1003</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">ORD-1002</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">مؤسسة النور</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023/05/15</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">البريد السعودي</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">SPL456789123</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        تم التسليم
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2 space-x-reverse">
+                                    <button
+                                        onclick="viewShipmentDetails('SHP-1003')"
+                                        class="text-blue-600 hover:text-blue-900"
+                                    >
+                                        عرض التفاصيل
+                                    </button>
+                                    <button
+                                        onclick="updateShipmentStatus('SHP-1003')"
+                                        class="text-green-600 hover:text-green-900"
+                                    >
+                                        تحديث الحالة
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">SHP-1004</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">ORD-1004</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">مكتبة المستقبل</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023/05/13</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">FedEx</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">FDX789456123</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        تم التسليم
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2 space-x-reverse">
+                                    <button
+                                        onclick="viewShipmentDetails('SHP-1004')"
+                                        class="text-blue-600 hover:text-blue-900"
+                                    >
+                                        عرض التفاصيل
+                                    </button>
+                                    <button
+                                        onclick="updateShipmentStatus('SHP-1004')"
+                                        class="text-green-600 hover:text-green-900"
+                                    >
+                                        تحديث الحالة
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Shipment Details Modal -->
+    <div id="shipmentDetailsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold">تفاصيل الشحنة <span id="shipmentIdDetails">SHP-1001</span></h2>
+                    <button
+                        onclick="closeShipmentDetails()"
+                        class="text-gray-500 hover:text-gray-700"
+                    >
+                        &times;
+                    </button>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500">رقم الطلبية</h3>
+                            <p class="mt-1">ORD-1001</p>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500">العميل</h3>
+                            <p class="mt-1">شركة الأمل للتجارة</p>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500">تاريخ الشحن</h3>
+                            <p class="mt-1">2023/05/16</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500">شركة الشحن</h3>
+                            <p class="mt-1">أرامكس</p>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500">رقم التتبع</h3>
+                            <p class="mt-1">ARX123456789</p>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-500">حالة الشحن</h3>
+                            <p class="mt-1">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    قيد التجهيز
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-medium mb-2">عنوان الشحن</h3>
+                        <div class="bg-gray-50 p-4 rounded-md">
+                            <p class="text-gray-700">شركة الأمل للتجارة</p>
+                            <p class="text-gray-700">شارع الملك فهد، حي العليا</p>
+                            <p class="text-gray-700">الرياض، المملكة العربية السعودية</p>
+                            <p class="text-gray-700">الرمز البريدي: 12345</p>
+                            <p class="text-gray-700">رقم الهاتف: +966 12 345 6789</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-medium mb-2">المنتجات المشحونة</h3>
+                        <div class="border rounded-md overflow-hidden">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">المنتج</th>
+                                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الكمية</th>
+                                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الوزن (كجم)</th>
+                                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الأبعاد (سم)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">لابتوب HP Pavilion</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">4.5</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">35 × 25 × 5</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">سماعات Apple AirPods Pro</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">3</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">0.3</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">10 × 5 × 3</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-medium mb-2">تاريخ الشحنة</h3>
+                        <div class="border rounded-md overflow-hidden">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">التاريخ</th>
+                                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الحالة</th>
+                                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الموقع</th>
+                                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">ملاحظات</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2023/05/16 09:30</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">تم إنشاء الشحنة</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">المستودع الرئيسي</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2023/05/16 14:45</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">قيد التجهيز</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">المستودع الرئيسي</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">جاري تجهيز المنتجات للشحن</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end space-x-2 space-x-reverse">
+                        <button
+                            type="button"
+                            onclick="closeShipmentDetails()"
+                            class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded"
+                        >
+                            إغلاق
+                        </button>
+                        <button
+                            type="button"
+                            class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
+                        >
+                            طباعة بوليصة الشحن
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Shipment Status Modal -->
+    <div id="updateStatusModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold">تحديث حالة الشحنة <span id="updateShipmentId">SHP-1001</span></h2>
+                    <button
+                        onclick="closeUpdateStatus()"
+                        class="text-gray-500 hover:text-gray-700"
+                    >
+                        &times;
+                    </button>
+                </div>
+
+                <form class="space-y-4">
+                    <div>
+                        <label for="newStatus" class="block text-sm font-medium text-gray-700 mb-1">الحالة الجديدة</label>
+                        <select
+                            id="newStatus"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                        >
+                            <option value="pending">قيد التجهيز</option>
+                            <option value="shipped">تم الشحن</option>
+                            <option value="in-transit">في الطريق</option>
+                            <option value="out-for-delivery">قيد التوصيل</option>
+                            <option value="delivered">تم التسليم</option>
+                            <option value="returned">مرتجع</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="statusLocation" class="block text-sm font-medium text-gray-700 mb-1">الموقع</label>
+                        <input
+                            type="text"
+                            id="statusLocation"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                            placeholder="أدخل الموقع الحالي للشحنة"
+                        />
+                    </div>
+
+                    <div>
+                        <label for="statusNotes" class="block text-sm font-medium text-gray-700 mb-1">ملاحظات</label>
+                        <textarea
+                            id="statusNotes"
+                            rows="3"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                            placeholder="أدخل أي ملاحظات إضافية"
+                        ></textarea>
+                    </div>
+
+                    <div class="flex justify-end space-x-2 space-x-reverse">
+                        <button
+                            type="button"
+                            onclick="closeUpdateStatus()"
+                            class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded"
+                        >
+                            إلغاء
+                        </button>
+                        <button
+                            type="submit"
+                            class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
+                        >
+                            تحديث الحالة
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 p-4 text-center text-gray-600 mt-8">
+        <p>© 2025 نظام إدارة المخازن -تطوير المهندس محمد عبالمنعم- جميع الحقوق محفوظة</p>
+    </footer>
+
+    <script>
+        // No need for dynamic year as it's fixed to 2025
+
+        // View Shipment Details
+        function viewShipmentDetails(shipmentId) {
+            document.getElementById('shipmentIdDetails').textContent = shipmentId;
+            document.getElementById('shipmentDetailsModal').classList.remove('hidden');
+        }
+
+        // Close Shipment Details Modal
+        function closeShipmentDetails() {
+            document.getElementById('shipmentDetailsModal').classList.add('hidden');
+        }
+
+        // Update Shipment Status
+        function updateShipmentStatus(shipmentId) {
+            document.getElementById('updateShipmentId').textContent = shipmentId;
+            document.getElementById('updateStatusModal').classList.remove('hidden');
+        }
+
+        // Close Update Status Modal
+        function closeUpdateStatus() {
+            document.getElementById('updateStatusModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التقارير والتحليلات - نظام إدارة المخازن</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .chart-container {
+            height: 300px;
+            position: relative;
+        }
+        .bar {
+            position: absolute;
+            bottom: 0;
+            width: 40px;
+            background-color: #3B82F6;
+            transition: height 0.5s ease;
+        }
+        .bar-label {
+            position: absolute;
+            bottom: -25px;
+            width: 40px;
+            text-align: center;
+            font-size: 12px;
+        }
+        .bar-value {
+            position: absolute;
+            top: -20px;
+            width: 40px;
+            text-align: center;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-blue-600 text-white p-4 shadow-md">
+        <div class="container mx-auto">
+            <h1 class="text-3xl font-bold">نظام إدارة المخازن</h1>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-blue-700 text-white shadow-md">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-3">
+                <a href="index.html" class="text-xl font-bold">نظام إدارة المخازن</a>
+
+                <div class="hidden md:flex space-x-4 space-x-reverse">
+                    <a href="dashboard.html" class="px-3 py-2 rounded hover:bg-blue-600">لوحة التحكم</a>
+                    <a href="products.html" class="px-3 py-2 rounded hover:bg-blue-600">المنتجات</a>
+                    <a href="inventory.html" class="px-3 py-2 rounded hover:bg-blue-600">المخزون</a>
+                    <a href="orders.html" class="px-3 py-2 rounded hover:bg-blue-600">الطلبيات</a>
+                    <a href="shipping.html" class="px-3 py-2 rounded hover:bg-blue-600">الشحن</a>
+                    <a href="reports.html" class="px-3 py-2 rounded bg-blue-800">التقارير</a>
+                    <a href="users.html" class="px-3 py-2 rounded hover:bg-blue-600">المستخدمين</a>
+                </div>
+
+                <div class="md:hidden">
+                    <!-- Mobile menu button -->
+                    <button class="flex items-center px-3 py-2 border rounded border-blue-400 hover:text-white hover:border-white">
+                        <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <title>القائمة</title>
+                            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-6">
+        <div class="space-y-6">
+            <h1 class="text-2xl font-bold">التقارير والتحليلات</h1>
+
+            <!-- Report Filters -->
+            <div class="bg-white p-4 rounded-lg shadow">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label for="report-type" class="block text-sm font-medium text-gray-700 mb-1">نوع التقرير</label>
+                        <select
+                            id="report-type"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                            onchange="changeReportType()"
+                        >
+                            <option value="sales">المبيعات</option>
+                            <option value="inventory">المخزون</option>
+                            <option value="products">المنتجات الأكثر مبيعاً</option>
+                            <option value="shipping">الشحن</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="date-range" class="block text-sm font-medium text-gray-700 mb-1">الفترة الزمنية</label>
+                        <select
+                            id="date-range"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                        >
+                            <option value="today">اليوم</option>
+                            <option value="week">هذا الأسبوع</option>
+                            <option value="month" selected>هذا الشهر</option>
+                            <option value="quarter">هذا الربع</option>
+                            <option value="year">هذا العام</option>
+                            <option value="custom">مخصص</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="start-date" class="block text-sm font-medium text-gray-700 mb-1">من تاريخ</label>
+                        <input
+                            type="date"
+                            id="start-date"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                            value="2023-05-01"
+                        />
+                    </div>
+                    <div>
+                        <label for="end-date" class="block text-sm font-medium text-gray-700 mb-1">إلى تاريخ</label>
+                        <input
+                            type="date"
+                            id="end-date"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2"
+                            value="2023-05-31"
+                        />
+                    </div>
+                </div>
+                <div class="mt-4 flex justify-end">
+                    <button
+                        onclick="generateReport()"
+                        class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
+                    >
+                        إنشاء التقرير
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sales Report -->
+            <div id="sales-report" class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-xl font-semibold mb-4">تقرير المبيعات - مايو 2023</h2>
+
+                <!-- Summary Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <h3 class="text-lg font-medium text-blue-700">إجمالي المبيعات</h3>
+                        <p class="text-3xl font-bold text-blue-600">$12,450</p>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-lg">
+                        <h3 class="text-lg font-medium text-green-700">عدد الطلبيات</h3>
+                        <p class="text-3xl font-bold text-green-600">45</p>
+                    </div>
+                    <div class="bg-purple-50 p-4 rounded-lg">
+                        <h3 class="text-lg font-medium text-purple-700">متوسط قيمة الطلبية</h3>
+                        <p class="text-3xl font-bold text-purple-600">$276.67</p>
+                    </div>
+                    <div class="bg-yellow-50 p-4 rounded-lg">
+                        <h3 class="text-lg font-medium text-yellow-700">نسبة النمو</h3>
+                        <p class="text-3xl font-bold text-yellow-600">+12.5%</p>
+                    </div>
+                </div>
+
+                <!-- Sales Chart -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-medium mb-4">المبيعات اليومية</h3>
+                    <div class="chart-container border border-gray-200 rounded-lg p-4 relative">
+                        <!-- Y-axis labels -->
+                        <div class="absolute top-0 right-0 h-full flex flex-col justify-between pr-2 text-xs text-gray-500">
+                            <span>$1,000</span>
+                            <span>$750</span>
+                            <span>$500</span>
+                            <span>$250</span>
+                            <span>$0</span>
+                        </div>
+
+                        <!-- X-axis -->
+                        <div class="absolute bottom-0 left-16 right-8 h-px bg-gray-300"></div>
+
+                        <!-- Bars -->
+                        <div class="absolute bottom-0 left-20 right-12 h-[250px]">
+                            <!-- Bar 1 -->
+                            <div class="bar" style="left: 0; height: 150px;">
+                                <div class="bar-value">$600</div>
+                                <div class="bar-label">1 مايو</div>
+                            </div>
+                            <!-- Bar 2 -->
+                            <div class="bar" style="left: 60px; height: 100px;">
+                                <div class="bar-value">$400</div>
+                                <div class="bar-label">2 مايو</div>
+                            </div>
+                            <!-- Bar 3 -->
+                            <div class="bar" style="left: 120px; height: 200px;">
+                                <div class="bar-value">$800</div>
+                                <div class="bar-label">3 مايو</div>
+                            </div>
+                            <!-- Bar 4 -->
+                            <div class="bar" style="left: 180px; height: 125px;">
+                                <div class="bar-value">$500</div>
+                                <div class="bar-label">4 مايو</div>
+                            </div>
+                            <!-- Bar 5 -->
+                            <div class="bar" style="left: 240px; height: 175px;">
+                                <div class="bar-value">$700</div>
+                                <div class="bar-label">5 مايو</div>
+                            </div>
+                            <!-- Bar 6 -->
+                            <div class="bar" style="left: 300px; height: 225px;">
+                                <div class="bar-value">$900</div>
+                                <div class="bar-label">6 مايو</div>
+                            </div>
+                            <!-- Bar 7 -->
+                            <div class="bar" style="left: 360px; height: 150px;">
+                                <div class="bar-value">$600</div>
+                                <div class="bar-label">7 مايو</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Products Table -->
+                <div>
+                    <h3 class="text-lg font-medium mb-4">المنتجات الأكثر مبيعاً</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">المنتج</th>
+                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الكمية المباعة</th>
+                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">إجمالي المبيعات</th>
+                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">نسبة المبيعات</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">لابتوب HP Pavilion</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">12</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$10,788</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">28.5%</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">هاتف سامسونج Galaxy S21</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">8</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$6,392</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">16.9%</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">سماعات Apple AirPods Pro</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">15</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$3,735</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">9.9%</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">تلفزيون سامسونج 55 بوصة</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">5</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$3,495</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">9.2%</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">كاميرا كانون DSLR</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">4</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$2,196</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">5.8%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Export Buttons -->
+                <div class="mt-6 flex justify-end space-x-2 space-x-reverse">
+                    <button
+                        onclick="exportToPDF()"
+                        class="bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded"
+                    >
+                        تصدير PDF
+                    </button>
+                    <button
+                        onclick="exportToExcel()"
+                        class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded"
+                    >
+                        تصدير Excel
+                    </button>
+                    <button
+                        onclick="printReport()"
+                        class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
+                    >
+                        طباعة
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 p-4 text-center text-gray-600 mt-8">
+        <p>© 2025 نظام إدارة المخازن -تطوير المهندس محمد عبالمنعم- جميع الحقوق محفوظة</p>
+    </footer>
+
+    <script>
+        // No need for dynamic year as it's fixed to 2025
+
+        // Change Report Type
+        function changeReportType() {
+            // This would normally load different report data
+            alert('تم تغيير نوع التقرير');
+        }
+
+        // Generate Report
+        function generateReport() {
+            const reportType = document.getElementById('report-type').value;
+            const dateRange = document.getElementById('date-range').value;
+            const startDate = document.getElementById('start-date').value;
+            const endDate = document.getElementById('end-date').value;
+
+            // This would normally generate a new report based on the selected filters
+            alert(`جاري إنشاء تقرير ${reportType} للفترة من ${startDate} إلى ${endDate}`);
+        }
+
+        // Print Report
+        function printReport() {
+            // إعداد نسخة للطباعة
+            const reportTitle = document.querySelector('h2').textContent;
+            const printWindow = window.open('', '_blank');
+
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="ar" dir="rtl">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>${reportTitle}</title>
+                    <style>
+                        body {
+                            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                            padding: 20px;
+                        }
+                        h1 {
+                            text-align: center;
+                            margin-bottom: 20px;
+                        }
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            margin-bottom: 20px;
+                        }
+                        th, td {
+                            border: 1px solid #ddd;
+                            padding: 8px;
+                            text-align: right;
+                        }
+                        th {
+                            background-color: #f2f2f2;
+                        }
+                        .summary-cards {
+                            display: flex;
+                            justify-content: space-between;
+                            margin-bottom: 20px;
+                        }
+                        .card {
+                            border: 1px solid #ddd;
+                            padding: 10px;
+                            width: 23%;
+                        }
+                        .footer {
+                            text-align: center;
+                            margin-top: 30px;
+                            font-size: 12px;
+                            color: #666;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h1>${reportTitle}</h1>
+
+                    <div class="summary-cards">
+                        <div class="card">
+                            <h3>إجمالي المبيعات</h3>
+                            <p>$12,450</p>
+                        </div>
+                        <div class="card">
+                            <h3>عدد الطلبيات</h3>
+                            <p>45</p>
+                        </div>
+                        <div class="card">
+                            <h3>متوسط قيمة الطلبية</h3>
+                            <p>$276.67</p>
+                        </div>
+                        <div class="card">
+                            <h3>نسبة النمو</h3>
+                            <p>+12.5%</p>
+                        </div>
+                    </div>
+
+                    <h2>المنتجات الأكثر مبيعاً</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>المنتج</th>
+                                <th>الكمية المباعة</th>
+                                <th>إجمالي المبيعات</th>
+                                <th>نسبة المبيعات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>لابتوب HP Pavilion</td>
+                                <td>12</td>
+                                <td>$10,788</td>
+                                <td>28.5%</td>
+                            </tr>
+                            <tr>
+                                <td>هاتف سامسونج Galaxy S21</td>
+                                <td>8</td>
+                                <td>$6,392</td>
+                                <td>16.9%</td>
+                            </tr>
+                            <tr>
+                                <td>سماعات Apple AirPods Pro</td>
+                                <td>15</td>
+                                <td>$3,735</td>
+                                <td>9.9%</td>
+                            </tr>
+                            <tr>
+                                <td>تلفزيون سامسونج 55 بوصة</td>
+                                <td>5</td>
+                                <td>$3,495</td>
+                                <td>9.2%</td>
+                            </tr>
+                            <tr>
+                                <td>كاميرا كانون DSLR</td>
+                                <td>4</td>
+                                <td>$2,196</td>
+                                <td>5.8%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="footer">
+                        <p>© 2025 نظام إدارة المخازن -تطوير المهندس محمد عبالمنعم- جميع الحقوق محفوظة</p>
+                        <p>تم إنشاء هذا التقرير في ${new Date().toLocaleString('ar-SA')}</p>
+                    </div>
+                </body>
+                </html>
+            `);
+
+            printWindow.document.close();
+
+            // انتظر حتى يتم تحميل المحتوى ثم قم بالطباعة
+            printWindow.onload = function() {
+                printWindow.print();
+                // printWindow.close(); // اختياري: إغلاق النافذة بعد الطباعة
+            };
+        }
+
+        // Export to PDF
+        function exportToPDF() {
+            // في تطبيق حقيقي، سنستخدم مكتبة مثل jsPDF لتحويل المحتوى إلى PDF
+            // لكن في هذا العرض التوضيحي، سنعرض رسالة فقط
+            alert('جاري تصدير التقرير إلى ملف PDF...');
+        }
+
+        // Export to Excel
+        function exportToExcel() {
+            // في تطبيق حقيقي، سنستخدم مكتبة مثل SheetJS لتحويل المحتوى إلى Excel
+            // لكن في هذا العرض التوضيحي، سنعرض رسالة فقط
+            alert('جاري تصدير التقرير إلى ملف Excel...');
+        }
+    </script>
+</body>
+</html>
